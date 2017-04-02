@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="628.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapplication12.FXMLDocumentController">
+   <children>
+      <BorderPane prefHeight="400.0" prefWidth="753.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="346.0" AnchorPane.topAnchor="0.0">
+         <left>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="add" mnemonicParsing="false" onAction="#add" text="Добавить" />
+                  <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" text="Удалить" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </left>
+         <bottom>
+            <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="save" mnemonicParsing="false" onAction="#save" text="Сохранить" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </bottom>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <top>
+            <TableView fx:id="checkView" editable="true" prefHeight="482.0" prefWidth="733.0" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn fx:id="id" prefWidth="45.0" text="№" />
+                  <TableColumn fx:id="condition" minWidth="0.0" onEditCommit="#change" prefWidth="218.0" text="Условие" />
+                  <TableColumn fx:id="result" onEditCommit="#change" prefWidth="96.0" text="Результат" />
+                <TableColumn fx:id="date" prefWidth="204.0" text="Дата" />
+                  <TableColumn fx:id="responsible" onEditCommit="#change" prefWidth="157.0" text="Ответственный" />
+              </columns>
+            </TableView>
+         </top>
+      </BorderPane>
+      <TableView fx:id="FileTable" layoutX="796.0" layoutY="8.0" prefHeight="491.0" prefWidth="290.0">
+        <columns>
+          <TableColumn fx:id="number_version" prefWidth="76.0" text="№ Версии" />
+          <TableColumn fx:id="date_version" prefWidth="95.0" text="Дата " />
+            <TableColumn fx:id="time_version" prefWidth="105.0" text=" время версии " />
+        </columns>
+      </TableView>
+      <Button layoutX="893.0" layoutY="507.0" mnemonicParsing="false" onAction="#OpenFile" prefHeight="25.0" prefWidth="96.0" text="Открыть файл" />
+      <Button layoutX="796.0" layoutY="507.0" mnemonicParsing="false" onAction="#Close_file" text="Закрыть файл" />
+      <Button layoutX="1015.0" layoutY="507.0" mnemonicParsing="false" onAction="#Upload_files" text="Загрузить" />
+   </children>
+</AnchorPane>
