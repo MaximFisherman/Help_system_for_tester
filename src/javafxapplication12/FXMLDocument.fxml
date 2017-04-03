@@ -46,7 +46,7 @@
             </TableView>
          </top>
       </BorderPane>
-      <TableView fx:id="FileTable" layoutX="796.0" layoutY="8.0" prefHeight="491.0" prefWidth="290.0">
+      <TableView fx:id="FileTable" layoutX="796.0" layoutY="67.0" prefHeight="432.0" prefWidth="290.0">
         <columns>
           <TableColumn fx:id="number_version" prefWidth="76.0" text="№ Версии" />
           <TableColumn fx:id="date_version" prefWidth="95.0" text="Дата " />
@@ -55,6 +55,8 @@
       </TableView>
       <Button layoutX="893.0" layoutY="507.0" mnemonicParsing="false" onAction="#OpenFile" prefHeight="25.0" prefWidth="96.0" text="Открыть файл" />
       <Button layoutX="796.0" layoutY="507.0" mnemonicParsing="false" onAction="#Close_file" text="Закрыть файл" />
-      <Button layoutX="1015.0" layoutY="507.0" mnemonicParsing="false" onAction="#Upload_files" text="Загрузить" />
+      <Button fx:id="Upload_button" layoutX="1015.0" layoutY="507.0" mnemonicParsing="false" onAction="#Upload_files" text="Загрузить" />
+      <Button layoutX="1035.0" layoutY="39.0" mnemonicParsing="false" onAction="#Search_to_file" text="Поиск" />
+      <TextField fx:id="Search_people" layoutX="796.0" layoutY="8.0" prefHeight="25.0" prefWidth="290.0" promptText="Поиск по файлам " />
    </children>
 </AnchorPane>

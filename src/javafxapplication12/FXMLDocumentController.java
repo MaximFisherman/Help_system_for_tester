@@ -22,9 +22,13 @@ import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Calendar;
 import static java.util.Collections.list;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -33,6 +37,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -103,6 +108,13 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private Button save;
+    
+    @FXML
+    private TextField Search_people;
+    
+    @FXML
+    private Button Upload_button;
+
     public FXMLDocumentController() {
     }
     
@@ -132,12 +144,104 @@ public class FXMLDocumentController implements Initializable {
     }    
     
     ArrayList File_name = new ArrayList();
+    ArrayList temp_file_name = new ArrayList();
+
     public void Close_file() {
         data.clear();
         add.setVisible(true);
         delete.setVisible(true);
         save.setVisible(true);
     }
+    
+    
+    public void Search_to_file() throws FileNotFoundException, IOException{
+        //Клонирование File для того что бы его не изменять
+      
+        
+        
+        Map staff = new HashMap<Integer, String>(); 
+        ArrayList count_list = new ArrayList();
+        for(int i=0;i<temp_file_name.size();i++){
+            InputStream in = new FileInputStream("Version/"+(String) temp_file_name.get(i));
+            HSSFWorkbook wb = new HSSFWorkbook(in);
+            Sheet s = wb.getSheetAt(0);
+            int count=0;
+            boolean input_str = false;
+           for(int j=0;j<=s.getPhysicalNumberOfRows()-1;j++)
+            {
+                String condition = wb.getSheetAt(0).getRow(j).getCell(1).getStringCellValue();
+                String result = wb.getSheetAt(0).getRow(j).getCell(2).getStringCellValue();
+                String date = wb.getSheetAt(0).getRow(j).getCell(3).getStringCellValue();
+                String tester = wb.getSheetAt(0).getRow(j).getCell(4).getStringCellValue();
+                ///Условия где проверется вхождение строки в столбцы Exel файлов 
+                if(tester.indexOf(Search_people.getText()) != -1)
+                {    
+                    System.out.println("Строка 1 содержит подстроку 2");
+                    input_str = true;
+                    count++;                  
+                }
+                if(date.indexOf(Search_people.getText()) != -1)
+                {    
+                    System.out.println("Строка 1 содержит подстроку 2");
+                    input_str = true;
+                    count++;                  
+                }
+                if(result.indexOf(Search_people.getText()) != -1)
+                {    
+                    System.out.println("Строка 1 содержит подстроку 2");
+                    input_str = true;
+                    count++;                  
+                }
+                if(condition.indexOf(Search_people.getText()) != -1)
+                {    
+                    System.out.println("Строка 1 содержит подстроку 2");
+                    input_str = true;
+                    count++;                  
+                }
+    
+                 System.out.println("Count of "+count);      
+            }
+           
+           if(input_str){
+               System.out.println("input str work!!!");
+               staff.put(count,(String) temp_file_name.get(i));
+               count_list.add(count);
+           }
+           in.close();
+        }
+        
+        TreeMap<Integer, String> sorted = new TreeMap<Integer, String>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2.compareTo(o1);
+            }
+        });
+        
+        sorted.putAll(staff);
+        ver_list.clear();
+        File_name.clear();
+        for (int i=0;i<count_list.size();i++)
+        {
+            String date = (String) sorted.get(count_list.get(i));
+            System.out.println("Date:"+date);
+            System.out.println("Date_sub:"+date.substring(0,8)+"Time_sub:"+date.substring(9, 17));
+             Version_file ch = new Version_file(i+1, date.substring(0,8), date.substring(9, 17));
+             ver_list.add(ch);
+             File_name.add(date);
+        }
+
+
+//File_name.add(staff.get(25));
+            //System.out.println(count_list.get(i));
+        //;
+         /*
+        int i=0; 
+        while(i != list.size()){ 
+        Row row = sheet.createRow(i);
+        row.createCell(0).setCellValue("asdasd");
+        }*/
+    }
+    
     
     public void OpenFile() throws IOException{
         TablePosition pos = FileTable.getSelectionModel().getSelectedCells().get(0);
@@ -167,7 +271,8 @@ public class FXMLDocumentController implements Initializable {
    
     
 
-    public void Upload_files(){
+    public void Upload_files(){      
+        Upload_button.setText("Обновить");
         ver_list.clear();
         File []fList;        
         File F = new File("Version/");
@@ -181,7 +286,7 @@ public class FXMLDocumentController implements Initializable {
                 File_name.add(fList[i].getName());
             }
         }
-       
+        temp_file_name.addAll(File_name);//Копирование в запасной масив. ДАже не пытайтесь понять 
     }
     
     public void add(){
@@ -207,7 +312,6 @@ public class FXMLDocumentController implements Initializable {
     public void delete(){
         int selectedIndex = checkView.getSelectionModel().getSelectedIndex(); 
         data.remove(selectedIndex);
-        
         for(int i=0;i< data.size();i++)
         {
             data.get(i).setId(i+1);
